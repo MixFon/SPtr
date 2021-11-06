@@ -3,6 +3,7 @@
 #include <math.h>
 #include "Ptr.h"
 #include "SPrt.h"
+#include "List.h"
 
 
 struct Point {
@@ -25,7 +26,6 @@ namespace  {
 TEST(TestPrt, operator_star) {
 	Ptr<int> intPtr(new int(2));
 	EXPECT_EQ(*intPtr, 2);
-	EXPECT_NE(*intPtr, 4);
 }
 
 
@@ -33,14 +33,10 @@ TEST(TestPrt, operator_arrow) {
 	Ptr<Point> pointOnePtr(new Point());
 	EXPECT_EQ(pointOnePtr->x, 0);
 	EXPECT_EQ(pointOnePtr->y, 0);
-	EXPECT_NE(pointOnePtr->x, 1);
-	EXPECT_NE(pointOnePtr->y, 1);
 	
 	Ptr<Point> pointTwoPtr(new Point(4, 6));
 	EXPECT_EQ(pointTwoPtr->x, 4);
 	EXPECT_EQ(pointTwoPtr->y, 6);
-	EXPECT_NE(pointTwoPtr->x, 6);
-	EXPECT_NE(pointTwoPtr->y, 4);
 }
 
 TEST(TestSPrt, incrementOne) {
@@ -87,5 +83,19 @@ TEST(TestSPrt, PointsEqual) {
 	intSPtrOne = intSPtrTwo;
 	EXPECT_EQ(intSPtrOne.getReferenceCounter(), 2);
 	EXPECT_EQ(intSPtrTwo.getReferenceCounter(), 2);
+}
+
+TEST(TestList, CopyList) {
+	List<int> newList;
+	{
+		List<int> list;
+		list.addNode(11);
+		list.addNode(22);
+		list.addNode(33);
+		list.addNode(44);
+		newList = list.getCopy();
+		std::cout << list.getSize() << std::endl;
+	}
+	EXPECT_EQ(newList.getSize(), 4);
 }
 }
